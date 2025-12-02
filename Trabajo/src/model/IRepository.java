@@ -1,5 +1,11 @@
 package model;
 
+import java.util.List;
+
 public interface IRepository {
+    public Question addQuestion(Question q) throws IRepositoryException;
+    public void removeQuestion(Question q) throws IRepositoryException;
+    public Question modifyQuestion(Question q) throws IRepositoryException;
+    public List<Question> getAllQuestions() throws IRepositoryException;
     
 }
