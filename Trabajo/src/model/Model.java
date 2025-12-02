@@ -1,6 +1,8 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 public class Model{
     private IRepository repository;
@@ -14,6 +16,26 @@ public class Model{
     }
 
     public void addQuestion(Question q){
-        repository.addQuestion(q);
+        Question addedQuestion = repository.addQuestion(q);
+    }
+
+    public List<Question> getAllQuestionsOrderedByDate(){
+        List<Question> questionsOrderedByDate = repository.getAllQuestions();
+        questionsOrderedByDate.sort(Comparator.comparing(Question::getCreationDate)); //Se ordenan por fecha de creación
+        return questionsOrderedByDate;
+    }
+
+    public List<Question> getAllQuestions(){
+        return repository.getAllQuestions();
+    }
+
+    public List<Question> getQuestionsByTopic(String topic){
+        List<Question> byTopicQuestions = new ArrayList<>();
+        for(Question q : repository.getAllQuestions()){
+            if(q.getTopics().contains(topic)){
+                byTopicQuestions.add(q);
+            }
+        }
+        return byTopicQuestions;
     }
 }

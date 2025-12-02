@@ -1,6 +1,6 @@
 package view;
 
-import java.lang.classfile.ClassFile.Option;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -33,7 +33,7 @@ public class InteractiveView extends BaseView {
                     listQuestions();
                     break;
                 case 3:
-                    //Ver detalle de una pregunta
+                    showDetailQuestion();
                     break;
                 case 4:
                     //Importar preguntas y temas desde JSON
@@ -72,8 +72,9 @@ public class InteractiveView extends BaseView {
         }
         String author=Esdia.readString_ne("Introduzca el autor de la pregunta: ");
         UUID id=UUID.randomUUID();
-    
-        controller.addQuestion(statement, topics, options, author, id);
+        LocalDate creationDate = LocalDate.now();
+
+        controller.addQuestion(statement, topics, options, author, id, creationDate);
         showMessage("Pregunta añadida correctamente.");
     }
 
@@ -97,6 +98,95 @@ public class InteractiveView extends BaseView {
         }
         return options;
     }
+
+    public void listQuestions(){
+        showMessage("¿Cómo desea listar las preguntas?");
+        showMessage("1. Listar todas las preguntas.");
+        showMessage("2. Listar preguntas ordenadas por fecha de creación.");
+        showMessage("3. Listar preguntas por tema.");
+        int option=Esdia.readInt("Introduzca la opción deseada: ",1,3);
+        List<Question> questions=new ArrayList<Question>();
+        switch(option){
+            case 1:
+                questions=controller.getAllQuestions();
+                break;
+            case 2:
+                questions=controller.getAllQuestionsOrderedByDate();
+                break;
+            case 3:
+                String topic=Esdia.readString_ne("Introduzca el tema por el que filtrar: ");
+                topic=topic.trim().toUpperCase(); //En mayúsculas y sin espacios
+                questions=controller.getQuestionsByTopic(topic);
+                break;
+            
+            default:
+                showErrorMessage("Opción no válida.");
+                return;
+        } 
+        if(questions.isEmpty()){
+            showMessage("No hay preguntas disponibles.");
+            return;
+        }
+        for(Question q:questions){
+            showMessage("Pregunta ID: "+q.getId()+" \nEnunciado: "+q.getStatement());
+        }
+
+    }
+
+    public void showDetailQuestion(){
+        String idString=Esdia.readString_ne("Introduzca el ID de la pregunta que desea ver: ");
+        UUID id;
+        try{
+            id=UUID.fromString(idString);
+        }catch(IllegalArgumentException e){
+            showErrorMessage("ID no válido.");
+            return;
+        }
+        List<Question> questions=controller.getAllQuestions();
+        Question foundQuestion=null;
+        for(Question q:questions){
+            if(q.getId().equals(id)){
+                foundQuestion=q;
+                break;
+            }
+        }
+        if(foundQuestion==null){
+            showErrorMessage("Pregunta no encontrada.");
+            return;
+        }
+        showMessage("Detalle de la pregunta:");
+        showMessage("ID: "+foundQuestion.getId());
+        showMessage("Enunciado: "+foundQuestion.getStatement());
+        showMessage("Autor: "+foundQuestion.getAuthor());
+        showMessage("Fecha de creación: "+foundQuestion.getCreationDate().toString());
+        showMessage("Temas: "+String.join(", ", foundQuestion.getTopics()));
+        showMessage("Opciones:");
+        List<Option> options=foundQuestion.getOptions();
+        for(int i=0;i<options.size();i++){
+            Option op=options.get(i);
+            showMessage("Opción "+(i+1)+": "+op.getText()+" | Razonamiento: "+op.getRationale()+" | Correcta: "+op.isCorrect());
+        }
+
+        showMessage("¿Qué desea hacer?");
+        showMessage("1. Modificar algún atributo de la pregunta");
+        showMessage("2. Eliminar la pregunta.");
+        showMessage("3. Volver al menú.");
+        int option=Esdia.readInt("Introduzca la opción deseada: ",1,3);
+        switch(option){
+            case 1:
+                //Modificar algún atributo de la pregunta 
+                break;
+            case 2:
+                //Eliminar pregunta
+                break;
+            case 3:
+                //Volver al menú
+                break;
+            default:
+                showErrorMessage("Opción no válida.");
+        }
+
+}
 }
 
 
