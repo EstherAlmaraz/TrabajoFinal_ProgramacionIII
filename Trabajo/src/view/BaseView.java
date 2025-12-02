@@ -3,7 +3,7 @@ package view;
 import controller.Controller;
 
 public abstract class BaseView {
-    private Controller controller;
+    protected Controller controller; //VER SI ES MEJOR PRIVATE
 
     public void setController(Controller controller) {
         this.controller = controller;

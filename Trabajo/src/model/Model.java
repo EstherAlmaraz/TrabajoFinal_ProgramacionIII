@@ -13,4 +13,7 @@ public class Model{
         this.questionCreators = questionCreators;
     }
 
+    public void addQuestion(Question q){
+        repository.addQuestion(q);
+    }
 }
