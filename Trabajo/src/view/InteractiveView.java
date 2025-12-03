@@ -170,17 +170,43 @@ public class InteractiveView extends BaseView {
         showMessage("¿Qué desea hacer?");
         showMessage("1. Modificar algún atributo de la pregunta");
         showMessage("2. Eliminar la pregunta.");
-        showMessage("3. Volver al menú.");
-        int option=Esdia.readInt("Introduzca la opción deseada: ",1,3);
+        int option=Esdia.readInt("Introduzca la opción deseada: ",1,2);
         switch(option){
             case 1:
-                //Modificar algún atributo de la pregunta 
+                showMessage("¿Qué atributo desea modificar?");
+                showMessage("1. Autor.");
+                showMessage("2. Temas.");
+                showMessage("3. Enunciado.");
+                showMessage("4. Opciones.");
+                int atributo=Esdia.readInt("Introduzca la opción deseada: ",1,4);
+                switch(atributo){
+                    case 1:
+                        String newAuthor=Esdia.readString_ne("Introduzca el nuevo autor: ");
+                        controller.modifyQuestion(atributo, foundQuestion, newAuthor);
+                        showMessage("Autor modificado.");
+                        break;
+                    case 2:
+                        String newTopics=Esdia.readString_ne("Introduzca los nuevos temas (separados por comas): ");
+                        controller.modifyQuestion(atributo, foundQuestion, newTopics);
+                        showMessage("Temas modificados.");
+                        break;
+                    case 3:
+                        String newStatement=Esdia.readString_ne("Introduzca el nuevo enunciado: ");
+                        controller.modifyQuestion(atributo, foundQuestion, newStatement);
+                        showMessage("Enunciado modificado.");
+                        break;
+                    case 4:
+                        List<Option> newOptions=getOptions();
+                        controller.modifyOptions(foundQuestion, newOptions);
+                        showMessage("Opciones modificadas.");
+                        break;
+                    default:
+                        showErrorMessage("Opción no válida.");
+                }
                 break;
             case 2:
-                //Eliminar pregunta
-                break;
-            case 3:
-                //Volver al menú
+                controller.deleteQuestion(foundQuestion);
+                showMessage("Pregunta eliminada.");
                 break;
             default:
                 showErrorMessage("Opción no válida.");

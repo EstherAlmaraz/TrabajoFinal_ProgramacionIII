@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 
 public class Model{
     private IRepository repository;
@@ -37,5 +38,32 @@ public class Model{
             }
         }
         return byTopicQuestions;
+    }
+
+    public void modifyQuestion(int atributo, Question question, String nuevoValor){
+        
+        switch(atributo){
+            case 1: //Autor
+                question.setAuthor(nuevoValor);
+                break;
+            case 2://temas
+                question.setTopicsWithFormat(nuevoValor);
+                break;
+            case 3://enunciado
+                question.setStatement(nuevoValor);
+                break;
+            default:
+                throw new IllegalArgumentException("Atributo no válido");
+                
+        }
+        repository.modifyQuestion(question);
+    }
+
+    public void modifyOptions(Question question, List<Option> newOptions){
+        question.setOptions(newOptions);
+        repository.modifyQuestion(question);
+    }
+    public void deleteQuestion(Question question){
+        repository.removeQuestion(question);
     }
 }

@@ -13,6 +13,8 @@ public class Question {
     private List<Option> options; //4 options
     private LocalDate creationDate; //Date of creation
 
+    public Question(){ }
+
     public Question(String statement, HashSet<String> topics, List<Option> options, String author, UUID id, LocalDate creationDate) {
         this.statement = statement;
         this.topics = topics;
@@ -40,6 +42,14 @@ public class Question {
 
     public HashSet<String> getTopics() {
         return topics;
+    }
+
+    public void setTopicsWithFormat(String topics) {
+        HashSet<String> topicsSet = new HashSet<>();
+        for (String topic : topics.split(",")) {
+            topicsSet.add(topic.trim().toUpperCase());
+        }
+        this.topics = topicsSet;
     }
 
     public void setTopics(HashSet<String> topics) {

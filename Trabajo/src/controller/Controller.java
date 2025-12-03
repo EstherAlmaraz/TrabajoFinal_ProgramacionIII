@@ -1,5 +1,6 @@
 package controller;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
@@ -27,13 +28,9 @@ public class Controller {
     }
 
     public void addQuestion(String statement, String topics, List<Option> options, String author, UUID id, LocalDate creationDate) {
-       HashSet<String> topicsSet = new HashSet<>();
-       for (String topic : topics.split(",")) {
-            //ponerlos en mayusculas y sin espacios
-           topicsSet.add(topic.trim().toUpperCase());
-       }
-       Question question = new Question(statement, topicsSet, options, author, id, creationDate);
-       model.addQuestion(question);
+        Question question = new Question(statement, new HashSet<>(), options, author, id, creationDate);
+        question.setTopicsWithFormat(topics);
+        model.addQuestion(question);
     }
 
     public List<Question> getAllQuestions() {
@@ -45,5 +42,14 @@ public class Controller {
     }
     public List<Question> getAllQuestionsOrderedByDate() {
         return model.getAllQuestionsOrderedByDate();
+    }
+    public void modifyQuestion(int atributo, Question question, String nuevoValor) {
+        model.modifyQuestion(atributo, question, nuevoValor);
+    }
+    public void modifyOptions(Question question, List<Option> newOptions) {
+        model.modifyOptions(question, newOptions);
+    }
+    public void deleteQuestion(Question question) {
+        model.deleteQuestion(question);
     }
 }
