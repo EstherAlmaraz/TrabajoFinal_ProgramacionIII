@@ -85,7 +85,18 @@ public class InteractiveView extends BaseView {
         for(int i=0;i<NUM_OPTIONS;i++){
             String text=Esdia.readString_ne("Introduzca el texto de la opción "+(i+1)+": ");
             String rationale=Esdia.readString_ne("Introduzca la razón de la opción "+(i+1)+": ");
-            boolean correct=Esdia.readBoolean("¿Es esta opción correcta? (true/false): ");
+            String correctString=Esdia.readString_ne("¿Es esta opción correcta? (true/false): ");
+            boolean correct;
+            if(correctString.toLowerCase().equals("true")){
+                correct = true;
+            }
+            else if(correctString.toLowerCase().equals("false")){
+                correct = false;
+            }
+            else{
+                showErrorMessage("Valor incorrecto para correcta. Debe ser 'true' o 'false'.");
+                return null;
+            }
             if(correct){
                 numCorrects++;
             }
@@ -103,7 +114,7 @@ public class InteractiveView extends BaseView {
         showMessage("¿Cómo desea listar las preguntas?");
         showMessage("1. Listar todas las preguntas.");
         showMessage("2. Listar preguntas ordenadas por fecha de creación.");
-        showMessage("3. Listar preguntas por tema.");
+        showMessage("3. Listar preguntas filtradas por tema.");
         int option=Esdia.readInt("Introduzca la opción deseada: ",1,3);
         List<Question> questions=new ArrayList<Question>();
         switch(option){
@@ -231,4 +242,5 @@ public void exportJSON(){
     }catch(Exception e){
         showErrorMessage("Error al exportar: "+e.getMessage()); //Ver excepciones
     }
+}
 }
