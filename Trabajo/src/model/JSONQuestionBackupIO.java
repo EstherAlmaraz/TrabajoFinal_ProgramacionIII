@@ -34,7 +34,6 @@ public class JSONQuestionBackupIO implements QuestionBackupIO {
         } catch (IOException e) {
             throw new QuestionBackupIOException("Error al importar preguntas desde JSON", e);
         }
-        return null;
     }
 
     @Override

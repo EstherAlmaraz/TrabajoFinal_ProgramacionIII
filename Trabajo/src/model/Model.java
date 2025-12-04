@@ -17,21 +17,21 @@ public class Model{
         this.questionCreators = questionCreators;
     }
 
-    public void addQuestion(Question q){
-        Question addedQuestion = repository.addQuestion(q);
+    public void addQuestion(Question q) throws IRepositoryException {
+        repository.addQuestion(q);
     }
 
-    public List<Question> getAllQuestionsOrderedByDate(){
+    public List<Question> getAllQuestionsOrderedByDate() throws IRepositoryException {
         List<Question> questionsOrderedByDate = repository.getAllQuestions();
         questionsOrderedByDate.sort(Comparator.comparing(Question::getCreationDate)); //Se ordenan por fecha de creación
         return questionsOrderedByDate;
     }
 
-    public List<Question> getAllQuestions(){
+    public List<Question> getAllQuestions() throws IRepositoryException {
         return repository.getAllQuestions();
     }
 
-    public List<Question> getQuestionsByTopic(String topic){
+    public List<Question> getQuestionsByTopic(String topic) throws IRepositoryException {
         List<Question> byTopicQuestions = new ArrayList<>();
         for(Question q : repository.getAllQuestions()){
             if(q.getTopics().contains(topic)){
@@ -41,7 +41,7 @@ public class Model{
         return byTopicQuestions;
     }
 
-    public void modifyQuestion(int atributo, Question question, String nuevoValor){
+    public void modifyQuestion(int atributo, Question question, String nuevoValor) throws IRepositoryException {
         
         switch(atributo){
             case 1: //Autor
@@ -60,15 +60,15 @@ public class Model{
         repository.modifyQuestion(question);
     }
 
-    public void modifyOptions(Question question, List<Option> newOptions){
+    public void modifyOptions(Question question, List<Option> newOptions) throws IRepositoryException {
         question.setOptions(newOptions);
         repository.modifyQuestion(question);
     }
-    public void deleteQuestion(Question question){
+    public void deleteQuestion(Question question) throws IRepositoryException {
         repository.removeQuestion(question);
     }
-    public void importQuestionsFromJSON(){
-        List<Question> importedQuestions = backupHandler.importFromJSON();
+    public void importQuestionsFromJSON() throws QuestionBackupIOException, IRepositoryException {
+        List<Question> importedQuestions = backupHandler.importQuestions();
         HashSet<UUID> existingQuestionIds = new HashSet<>();
         for(Question q : repository.getAllQuestions()){
             existingQuestionIds.add(q.getId());
@@ -79,8 +79,8 @@ public class Model{
             }
         }
     }
-    public void exportQuestionsToJSON(){
+    public void exportQuestionsToJSON() throws QuestionBackupIOException, IRepositoryException {
         List<Question> exportedQuestions = repository.getAllQuestions();
-        backupHandler.exportToJSON(exportedQuestions);
+        backupHandler.exportQuestions(exportedQuestions);
     }
 }

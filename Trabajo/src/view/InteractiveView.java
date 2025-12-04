@@ -1,10 +1,12 @@
 package view;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import model.Question;
+import model.IRepositoryException;
 import model.Option;
 
 import com.coti.tools.Esdia;
@@ -73,13 +75,16 @@ public class InteractiveView extends BaseView {
         String author=Esdia.readString_ne("Introduzca el autor de la pregunta: ");
         UUID id=UUID.randomUUID();
         LocalDate creationDate = LocalDate.now();
-
-        controller.addQuestion(statement, topics, options, author, id, creationDate);
-        showMessage("Pregunta añadida correctamente.");
+        try {
+            controller.addQuestion(statement, topics, options, author, id, creationDate);
+            showMessage("Pregunta añadida correctamente.");
+        } catch (IRepositoryException e) {
+            showErrorMessage("Error al añadir la pregunta. " );
+            return;
+        }
     }
 
     public List<Option> getOptions(){
-        List<Option> options=new ArrayList<Option>();
         final int NUM_OPTIONS=4;
         int numCorrects=0;
         for(int i=0;i<NUM_OPTIONS;i++){
@@ -101,7 +106,7 @@ public class InteractiveView extends BaseView {
                 numCorrects++;
             }
             Option option=new Option(text,rationale,correct);
-            options.add(option);
+            controller.addOption(option);
         }
         if(numCorrects==0||numCorrects>1){
             showErrorMessage("Ha habido un error: debe haber exactamente una opción correcta.");
