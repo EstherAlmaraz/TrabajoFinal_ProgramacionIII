@@ -14,7 +14,7 @@ public class JSONQuestionBackupIO implements QuestionBackupIO {
     @Override
     public void exportQuestions(List<Question> questions) throws QuestionBackupIOException {
         Gson gson = new Gson();
-        String ruta=System.getProperty("user.dir") + File.separator+"questions_backup.json";
+        String ruta=System.getProperty("user.home") + File.separator+"questions_backup.json";
         try {
             String json = gson.toJson(questions);
             Files.write(Paths.get(ruta), json.getBytes(StandardCharsets.UTF_8));
@@ -26,7 +26,7 @@ public class JSONQuestionBackupIO implements QuestionBackupIO {
     @Override
     public List<Question> importQuestions() throws QuestionBackupIOException {
         Gson gson = new Gson();
-        String ruta=System.getProperty("user.dir") + File.separator+"questions_backup.json";
+        String ruta=System.getProperty("user.home") + File.separator+"questions_backup.json";
         try {
             String content = Files.readString(Paths.get(ruta), StandardCharsets.UTF_8);
             Question[] questions = gson.fromJson(content, Question[].class);

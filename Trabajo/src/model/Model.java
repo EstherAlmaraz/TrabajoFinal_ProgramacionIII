@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -68,8 +69,14 @@ public class Model{
     }
     public void importQuestionsFromJSON(){
         List<Question> importedQuestions = backupHandler.importFromJSON();
+        HashSet<UUID> existingQuestionIds = new HashSet<>();
+        for(Question q : repository.getAllQuestions()){
+            existingQuestionIds.add(q.getId());
+        }
         for(Question q : importedQuestions){
-            repository.addQuestion(q);
+            if(!existingQuestionIds.contains(q.getId())){
+                repository.addQuestion(q);
+            }
         }
     }
     public void exportQuestionsToJSON(){
