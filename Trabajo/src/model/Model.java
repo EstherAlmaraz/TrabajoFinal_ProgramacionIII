@@ -66,4 +66,14 @@ public class Model{
     public void deleteQuestion(Question question){
         repository.removeQuestion(question);
     }
+    public void importQuestionsFromJSON(){
+        List<Question> importedQuestions = backupHandler.importFromJSON();
+        for(Question q : importedQuestions){
+            repository.addQuestion(q);
+        }
+    }
+    public void exportQuestionsToJSON(){
+        List<Question> exportedQuestions = repository.getAllQuestions();
+        backupHandler.exportToJSON(exportedQuestions);
+    }
 }

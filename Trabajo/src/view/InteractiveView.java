@@ -36,10 +36,10 @@ public class InteractiveView extends BaseView {
                     showDetailQuestion();
                     break;
                 case 4:
-                    //Importar preguntas y temas desde JSON
+                    importJSON();
                     break;
                 case 5:
-                    //Exportar preguntas y temas a JSON
+                    exportJSON();
                     break;
                 case 6:
                     //Creación de pregunta automática
@@ -213,6 +213,22 @@ public class InteractiveView extends BaseView {
         }
 
 }
+public void importJSON(){
+    showMessage("Importar preguntas y temas desde JSON:");
+    try{
+        controller.importQuestionsFromJSON();
+        showMessage("Importación realizada correctamente.");
+    }catch(Exception e){
+        showErrorMessage("Error al importar: "+e.getMessage()); //Ver excepciones
+    }
 }
 
-
+public void exportJSON(){
+    showMessage("Exportar preguntas y temas a JSON:");
+    try{
+        controller.exportQuestionsToJSON();
+        showMessage("Exportación realizada correctamente.");
+    }catch(Exception e){
+        showErrorMessage("Error al exportar: "+e.getMessage()); //Ver excepciones
+    }
+}

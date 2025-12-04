@@ -52,4 +52,10 @@ public class Controller {
     public void deleteQuestion(Question question) {
         model.deleteQuestion(question);
     }
+    public void importQuestionsFromJSON() {
+        model.importQuestionsFromJSON();
+    }
+    public void exportQuestionsToJSON() {
+        model.exportQuestionsToJSON();
+    }
 }

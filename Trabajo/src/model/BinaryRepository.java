@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BinaryRepository implements IRepository {
     private ArrayList<Question> questions;
