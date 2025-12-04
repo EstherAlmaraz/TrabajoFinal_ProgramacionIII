@@ -20,7 +20,7 @@ public class Controller {
     }
 
     public void start() {
-        // Implementation of start method
+        view.showMenu();
     }
 
     public void end() {

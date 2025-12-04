@@ -10,7 +10,7 @@ public abstract class BaseView {
     }
 
     public void init() {
-        // Implementation of init method
+        showMenu();
     }
 
     public void showMessage(String message) {
