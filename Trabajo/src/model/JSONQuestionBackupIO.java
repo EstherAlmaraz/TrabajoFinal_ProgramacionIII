@@ -11,6 +11,8 @@ import java.util.List;
 import com.google.gson.Gson;
 
 public class JSONQuestionBackupIO implements QuestionBackupIO {
+    public JSONQuestionBackupIO() {
+    }
     @Override
     public void exportQuestions(List<Question> questions) throws QuestionBackupIOException {
         Gson gson = new Gson();

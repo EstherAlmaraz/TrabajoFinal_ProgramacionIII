@@ -30,8 +30,8 @@ public class Controller {
         // Implementation of end method
     }
 
-    public void addQuestion(String statement, String topics, List<Option> options, String author, UUID id, LocalDate creationDate) throws IRepositoryException {
-        Question question = new Question(statement, new HashSet<>(), options, author, id, creationDate);
+    public void addQuestion(String statement, String topics, List<Option> options, String author, UUID id) throws IRepositoryException {
+        Question question = new Question(statement, new HashSet<>(), options, author, id);
         question.setTopicsWithFormat(topics);
         model.addQuestion(question);
     }

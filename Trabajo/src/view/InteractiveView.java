@@ -75,9 +75,8 @@ public class InteractiveView extends BaseView {
         }
         String author=Esdia.readString_ne("Introduzca el autor de la pregunta: ");
         UUID id=UUID.randomUUID();
-        LocalDate creationDate = LocalDate.now();
         try {
-            controller.addQuestion(statement, topics, options, author, id, creationDate);
+            controller.addQuestion(statement, topics, options, author, id);
             showMessage("Pregunta añadida correctamente.");
         } catch (IRepositoryException e) {
             showErrorMessage("Error al añadir la pregunta. " );
@@ -167,8 +166,32 @@ public class InteractiveView extends BaseView {
             showMessage("No hay preguntas disponibles.");
             return;
         }
+        int i=1;
         for(Question q:questions){
-            showMessage("Pregunta ID: "+q.getId()+" \nEnunciado: "+q.getStatement());
+
+            showMessage("\n=============================================");
+            showMessage("           DETALLES DE LA PREGUNTA "+i+"       ");
+            showMessage("=============================================");
+            showMessage("Pregunta ID: "+q.getId());
+            showMessage("Tema: " + q.getTopicsAsString());
+            showMessage("Fecha: \n" + q.getCreationDate());
+            showMessage("----- PREGUNTA -----");
+            showMessage("Enunciado: "+q.getStatement());
+            showMessage("----- OPCIONES -----");
+            List<Option> opciones = q.getOptions(); 
+        
+            if (opciones == null || opciones.isEmpty()) {
+                showMessage("   [Sin opciones definidas]");
+            } else {
+                char letra = 'A';
+                for (Option opcion : opciones) {
+                
+                String correct = opcion.isCorrect() ? " [Respuesta Correcta]" : "";
+                String lineaOpcion = String.format("   (%c) %s%s", letra++, opcion.getText(), correct);
+                showMessage(lineaOpcion);
+            }
+        }
+            i++;
         }
 
     }

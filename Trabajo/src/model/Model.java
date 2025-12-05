@@ -16,7 +16,11 @@ public class Model{
         this.backupHandler = backupHandler;
         this.questionCreators = questionCreators;
     }
-    public Model(){}
+    public Model(){
+        this.repository = new BinaryRepository();
+        this.backupHandler = new JSONQuestionBackupIO();
+        this.questionCreators = new ArrayList<>();
+    }
 
     public void addQuestion(Question q) throws IRepositoryException {
         repository.addQuestion(q);
