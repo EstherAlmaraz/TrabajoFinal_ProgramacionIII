@@ -5,21 +5,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
-import com.google.gson.annotations.Expose;
 
 public class Question {
-    @Expose
+
     private UUID id; //Question identifier
-    @Expose
     private String author; //Human or AIModel
-    @Expose
     private HashSet<String> topics; //One or more topics
-    @Expose
     private String statement; //Question statement
-    @Expose
     private List<Option> options; //4 options
-    //Aquí no para evitar errores 
-    private final LocalDate creationDate=LocalDate.now(); //Date of creation
+    private final String creationDate=LocalDate.now().toString(); //Date of creation
 
     public Question(){ }
 
@@ -85,8 +79,8 @@ public class Question {
         this.options = options;
     }
 
-    public LocalDate getCreationDate() {
-        return creationDate;
+    public String getCreationDate() {
+        return creationDate.toString();
     }
 
     
