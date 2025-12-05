@@ -1,11 +1,11 @@
 package view;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import model.Question;
+import model.QuestionBackupIOException;
 import model.IRepositoryException;
 import model.Option;
 
@@ -13,7 +13,8 @@ import com.coti.tools.Esdia;
 
 public class InteractiveView extends BaseView {
     
-    public void showMenu(){
+    @Override
+    protected void showMenu(){
         int option;
         boolean valid=true;
         do {
@@ -87,29 +88,37 @@ public class InteractiveView extends BaseView {
     public List<Option> getOptions(){
         final int NUM_OPTIONS=4;
         int numCorrects=0;
+        List<Option> options=new ArrayList<>();
         for(int i=0;i<NUM_OPTIONS;i++){
             String text=Esdia.readString_ne("Introduzca el texto de la opción "+(i+1)+": ");
             String rationale=Esdia.readString_ne("Introduzca la razón de la opción "+(i+1)+": ");
+            boolean executionFlag=true;
+            boolean correct=false;
+            while(executionFlag){
             String correctString=Esdia.readString_ne("¿Es esta opción correcta? (true/false): ");
-            boolean correct;
             if(correctString.toLowerCase().equals("true")){
                 correct = true;
+                executionFlag=false;
             }
             else if(correctString.toLowerCase().equals("false")){
                 correct = false;
+                executionFlag=false;
             }
             else{
                 showErrorMessage("Valor incorrecto para correcta. Debe ser 'true' o 'false'.");
-                return null;
-            }
+            }}
             if(correct){
                 numCorrects++;
             }
             Option option=new Option(text,rationale,correct);
-            controller.addOption(option);
+            controller.addOption(option,options);
         }
         if(numCorrects==0||numCorrects>1){
             showErrorMessage("Ha habido un error: debe haber exactamente una opción correcta.");
+            return null;
+        }
+        if(options.size()!=NUM_OPTIONS){
+            showErrorMessage("Ha habido un error al crear las opciones.");
             return null;
         }
         return options;
@@ -124,15 +133,30 @@ public class InteractiveView extends BaseView {
         List<Question> questions=new ArrayList<Question>();
         switch(option){
             case 1:
-                questions=controller.getAllQuestions();
+                try {
+                    questions=controller.getAllQuestions();
+                } catch (IRepositoryException e) {
+                    showErrorMessage("Error al obtener las preguntas.");
+                    return;
+                }
                 break;
             case 2:
-                questions=controller.getAllQuestionsOrderedByDate();
+                try {
+                    questions=controller.getAllQuestionsOrderedByDate();
+                } catch (IRepositoryException e) {
+                    showErrorMessage("Error al obtener las preguntas.");
+                    return;
+                }
                 break;
             case 3:
                 String topic=Esdia.readString_ne("Introduzca el tema por el que filtrar: ");
                 topic=topic.trim().toUpperCase(); //En mayúsculas y sin espacios
-                questions=controller.getQuestionsByTopic(topic);
+                try {
+                    questions=controller.getQuestionsByTopic(topic);
+                } catch (IRepositoryException e) {
+                    showErrorMessage("Error al obtener las preguntas.");
+                    return;
+                }
                 break;
             
             default:
@@ -158,7 +182,13 @@ public class InteractiveView extends BaseView {
             showErrorMessage("ID no válido.");
             return;
         }
-        List<Question> questions=controller.getAllQuestions();
+        List<Question> questions;
+        try {
+            questions = controller.getAllQuestions();
+        } catch (IRepositoryException e) {
+            showErrorMessage("Error al obtener las preguntas.");
+            return;
+        }
         Question foundQuestion=null;
         for(Question q:questions){
             if(q.getId().equals(id)){
@@ -198,22 +228,42 @@ public class InteractiveView extends BaseView {
                 switch(atributo){
                     case 1:
                         String newAuthor=Esdia.readString_ne("Introduzca el nuevo autor: ");
-                        controller.modifyQuestion(atributo, foundQuestion, newAuthor);
+                        try {
+                            controller.modifyQuestion(atributo, foundQuestion, newAuthor);
+                        } catch (IRepositoryException e) {
+                            showErrorMessage("Error al modificar el autor.");
+                            return;
+                        }
                         showMessage("Autor modificado.");
                         break;
                     case 2:
                         String newTopics=Esdia.readString_ne("Introduzca los nuevos temas (separados por comas): ");
-                        controller.modifyQuestion(atributo, foundQuestion, newTopics);
+                        try {
+                            controller.modifyQuestion(atributo, foundQuestion, newTopics);
+                        } catch (IRepositoryException e) {
+                            showErrorMessage("Error al modificar los temas.");
+                            return;
+                        }
                         showMessage("Temas modificados.");
                         break;
                     case 3:
                         String newStatement=Esdia.readString_ne("Introduzca el nuevo enunciado: ");
-                        controller.modifyQuestion(atributo, foundQuestion, newStatement);
+                        try {
+                            controller.modifyQuestion(atributo, foundQuestion, newStatement);
+                        } catch (IRepositoryException e) {
+                            showErrorMessage("Error al modificar el enunciado.");
+                            return;
+                        }
                         showMessage("Enunciado modificado.");
                         break;
                     case 4:
                         List<Option> newOptions=getOptions();
-                        controller.modifyOptions(foundQuestion, newOptions);
+                        try {
+                            controller.modifyOptions(foundQuestion, newOptions);
+                        } catch (IRepositoryException e) {
+                            showErrorMessage("Error al modificar las opciones.");
+                            return;
+                        }
                         showMessage("Opciones modificadas.");
                         break;
                     default:
@@ -221,7 +271,12 @@ public class InteractiveView extends BaseView {
                 }
                 break;
             case 2:
-                controller.deleteQuestion(foundQuestion);
+                try {
+                    controller.deleteQuestion(foundQuestion);
+                } catch (IRepositoryException e) {
+                    showErrorMessage("Error al eliminar la pregunta.");
+                    return;
+                }
                 showMessage("Pregunta eliminada.");
                 break;
             default:
@@ -234,7 +289,7 @@ public void importJSON(){
     try{
         controller.importQuestionsFromJSON();
         showMessage("Importación realizada correctamente.");
-    }catch(Exception e){
+    }catch(QuestionBackupIOException | IRepositoryException e){
         showErrorMessage("Error al importar: "+e.getMessage()); //Ver excepciones
     }
 }
@@ -244,7 +299,7 @@ public void exportJSON(){
     try{
         controller.exportQuestionsToJSON();
         showMessage("Exportación realizada correctamente.");
-    }catch(Exception e){
+    }catch(QuestionBackupIOException | IRepositoryException e){
         showErrorMessage("Error al exportar: "+e.getMessage()); //Ver excepciones
     }
 }

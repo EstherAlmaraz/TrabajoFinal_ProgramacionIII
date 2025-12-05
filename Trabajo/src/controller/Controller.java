@@ -16,13 +16,14 @@ public class Controller {
     private Model model;
     private BaseView view;
 
-    Controller(Model model, BaseView view) {
+
+    public Controller(Model model, BaseView view) {
         this.model = model;
         this.view = view;
     }
 
     public void start() {
-        view.showMenu();
+        view.init();
     }
 
     public void end() {
@@ -33,6 +34,9 @@ public class Controller {
         Question question = new Question(statement, new HashSet<>(), options, author, id, creationDate);
         question.setTopicsWithFormat(topics);
         model.addQuestion(question);
+    }
+    public void addOption(Option o, List<Option> options) {
+        model.addOption(o, options);
     }
 
     public List<Question> getAllQuestions() throws IRepositoryException {

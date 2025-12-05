@@ -2,6 +2,7 @@ package view;
 
 import controller.Controller;
 
+
 public abstract class BaseView {
     protected Controller controller; //VER SI ES MEJOR PRIVATE
 
@@ -10,8 +11,9 @@ public abstract class BaseView {
     }
 
     public void init() {
-        showMenu();
+        this.showMenu();
     }
+    protected abstract void showMenu();
 
     public void showMessage(String message) {
         System.out.println(message);

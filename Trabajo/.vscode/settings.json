@@ -4,8 +4,8 @@
     ],
     "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
-        "/Users/esther/Downloads/jadapter-for-native-tts-0.12.0.jar",
-        "/Users/esther/Downloads/gson-2.10.1.jar",
-        "/Users/esther/Downloads/biblioteca11.jar"
+        "lib\\biblioteca11.jar",
+        "lib\\gson-2.10.1.jar",
+        "lib\\jadapter-for-native-tts-0.12.0.jar"
     ]
 }

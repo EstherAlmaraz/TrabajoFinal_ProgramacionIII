@@ -16,9 +16,13 @@ public class Model{
         this.backupHandler = backupHandler;
         this.questionCreators = questionCreators;
     }
+    public Model(){}
 
     public void addQuestion(Question q) throws IRepositoryException {
         repository.addQuestion(q);
+    }
+    public void addOption(Option o, List<Option> options) {
+        options.add(o);
     }
 
     public List<Question> getAllQuestionsOrderedByDate() throws IRepositoryException {
