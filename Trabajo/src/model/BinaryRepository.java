@@ -48,7 +48,7 @@ public class BinaryRepository implements IRepository {
     }
     @Override
     public void save() throws IRepositoryException{ //Puede que tenga que quitar IOException
-        Path p=Paths.get(System.getProperty("user.home") + File.separator+"questions_backup.json");
+        Path p=Paths.get(System.getProperty("user.home") + File.separator+"questions.dat");
         try(
         FileOutputStream fos=new FileOutputStream(p.toFile());
         BufferedOutputStream bos=new BufferedOutputStream(fos);
@@ -63,7 +63,7 @@ public class BinaryRepository implements IRepository {
 
     @Override
     public void load() throws IRepositoryException {
-        Path p=Paths.get(System.getProperty("user.home") + File.separator+"questions_backup.json");
+        Path p=Paths.get(System.getProperty("user.home") + File.separator+"questions.dat");
         try(
         FileInputStream fis=new FileInputStream(p.toFile());
         BufferedInputStream bis=new BufferedInputStream(fis);

@@ -15,7 +15,8 @@ public class Question implements Serializable{
     private String statement; //Question statement
     private List<Option> options; //4 options
     private final String creationDate=LocalDate.now().toString(); //Date of creation
-
+    private static final long serialVersionUID = 1L;
+    
     public Question(){ }
 
     public Question(String statement, HashSet<String> topics, List<Option> options, String author, UUID id) {

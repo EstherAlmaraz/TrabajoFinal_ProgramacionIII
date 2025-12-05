@@ -6,6 +6,7 @@ public class Option implements Serializable{
     private String text;//Answer text
     private String rationale;//Why it is right/wrong
     private boolean correct; //Is this option correct?
+    private static final long serialVersionUID = 1L;
 
     public Option(String text, String rationale, boolean correct) {
         this.text = text;
