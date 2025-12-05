@@ -1,6 +1,8 @@
 package model;
 
-public class Option {
+import java.io.Serializable;
+
+public class Option implements Serializable{
     private String text;//Answer text
     private String rationale;//Why it is right/wrong
     private boolean correct; //Is this option correct?

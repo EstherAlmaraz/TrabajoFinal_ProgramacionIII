@@ -16,6 +16,12 @@ public class InteractiveView extends BaseView {
     protected void showMenu(){
         int option;
         boolean valid=true;
+        showMessage("Cargando datos...");
+        try {
+            controller.load();
+        } catch (IRepositoryException e) {
+            showErrorMessage("Error al cargar los datos: "+e.getMessage());
+        }
         do {
             showMessage("----- MENÚ -----");
             showMessage("1. Crear nueva pregunta.");
@@ -51,6 +57,11 @@ public class InteractiveView extends BaseView {
                     break;
                 case 8:
                     showMessage("Saliendo...");
+                    try {
+                        controller.end();
+                    } catch (IRepositoryException e) {
+                        showErrorMessage("Error al guardar los datos al salir: "+e.getMessage());
+                    }
                     valid=false;
                     break;
                 default:

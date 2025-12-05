@@ -91,4 +91,11 @@ public class Model{
         List<Question> exportedQuestions = repository.getAllQuestions();
         backupHandler.exportQuestions(exportedQuestions);
     }
+    public void save() throws IRepositoryException {
+        repository.save();
+    }
+
+    public void load() throws IRepositoryException {
+        repository.load();
+    }
 }

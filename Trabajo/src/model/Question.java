@@ -1,12 +1,13 @@
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
 
-public class Question {
+public class Question implements Serializable{
 
     private UUID id; //Question identifier
     private String author; //Human or AIModel

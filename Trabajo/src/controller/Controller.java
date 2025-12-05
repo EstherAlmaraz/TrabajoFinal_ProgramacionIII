@@ -25,8 +25,11 @@ public class Controller {
         view.init();
     }
 
-    public void end() {
-        // Implementation of end method
+    public void end() throws IRepositoryException {
+        model.save();
+    }
+    public void load() throws IRepositoryException {
+        model.load();
     }
 
     public void addQuestion(String statement, String topics, List<Option> options, String author, UUID id) throws IRepositoryException {
