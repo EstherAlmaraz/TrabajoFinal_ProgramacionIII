@@ -56,7 +56,7 @@ public class InteractiveView extends BaseView {
                     //Menú modo examen
                     break;
                 case 8:
-                    showMessage("Saliendo...");
+                    showMessage("Guardando datos y saliendo...");
                     try {
                         controller.end();
                     } catch (IRepositoryException e) {

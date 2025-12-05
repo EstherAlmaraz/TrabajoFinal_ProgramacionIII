@@ -71,8 +71,11 @@ public class BinaryRepository implements IRepository {
         ){
         questions = (ArrayList<Question>) ois.readObject();
         } 
-        catch (IOException | ClassNotFoundException e) {
-            throw new IRepositoryException("Error loading questions from binary file", e);
+        catch (ClassNotFoundException e) {
+            throw new IRepositoryException("Error missing required class (Question or Option)", e);
+        }
+        catch (IOException e) {
+            throw new IRepositoryException("Error loading questions from binary file (permissions, disk problem, or file damage). Check if the file exists and is accessible.", e);
         }
     }
 }
