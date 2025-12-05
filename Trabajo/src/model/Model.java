@@ -98,4 +98,29 @@ public class Model{
     public void load() throws IRepositoryException {
         repository.load();
     }
+
+    public HashSet<String> getAvailableTopics() {
+        HashSet<String> topics = new HashSet<>();
+        try {
+            for (Question q : repository.getAllQuestions()) {
+                topics.addAll(q.getTopics());
+            }
+        } catch (IRepositoryException e) {
+            System.err.println("Error retrieving topics: " + e.getMessage());
+        }
+        return topics;
+    }
+    public int getMaxQuestions(String topic) {
+        int maxQuestions = 0;
+        try {
+            for (Question q : repository.getAllQuestions()) {
+                if (topic.equals("TODOS") || q.getTopics().contains(topic)) {
+                    maxQuestions++;
+                }
+            }
+        } catch (IRepositoryException e) {
+            System.err.println("Error counting questions: " + e.getMessage());
+        }
+        return maxQuestions;
+    }
 }

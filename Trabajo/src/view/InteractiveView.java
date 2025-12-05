@@ -1,6 +1,7 @@
 package view;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 import model.Question;
@@ -50,10 +51,11 @@ public class InteractiveView extends BaseView {
                     exportJSON();
                     break;
                 case 6:
-                    //Creación de pregunta automática
+                    //Modo examen
+                    startExamMode();
                     break;
                 case 7:
-                    //Menú modo examen
+                    //Questioncreator
                     break;
                 case 8:
                     showMessage("Guardando datos y saliendo...");
@@ -335,5 +337,31 @@ public void exportJSON(){
     }catch(QuestionBackupIOException | IRepositoryException e){
         showErrorMessage("Error al exportar: "+e.getMessage()); //Ver excepciones
     }
+}
+public void startExamMode(){
+    HashSet<String> topics = controller.startExamMode();
+    showMessage("Temas disponibles:");
+
+    int i=1;
+    for(String topic : topics){
+        showMessage(i + ". " + topic);
+        i++;
+    }
+    String topicOption;
+    do{
+        topicOption=Esdia.readString_ne("Seleccione un tema o todos: ");
+        if(!topics.contains(topicOption.trim().toUpperCase())){
+            showErrorMessage("Tema no válido.");
+        }
+    }while(!topics.contains(topicOption.trim().toUpperCase()));
+
+    showMessage("Modo examen iniciado con el tema: " + topicOption);
+    int maxQuestions=controller.topicSelected(topicOption);
+
+    
+    
+    showMessage("Introduzca el número de preguntas que desea realizar:");
+    int numQuestions=Esdia.readInt("Número de preguntas: ",1,maxQuestions);
+
 }
 }

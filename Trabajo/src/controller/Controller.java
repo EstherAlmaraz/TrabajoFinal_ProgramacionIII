@@ -66,4 +66,13 @@ public class Controller {
     public void exportQuestionsToJSON() throws QuestionBackupIOException, IRepositoryException {
         model.exportQuestionsToJSON();
     }
+
+    public HashSet<String> startExamMode() {
+        HashSet<String> topics = model.getAvailableTopics();
+        topics.add("TODOS");
+        return topics;
+    }
+    public int topicSelected(String topic) {
+        return model.getMaxQuestions(topic);
+    }
 }
