@@ -1,6 +1,8 @@
 package model;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -123,4 +125,23 @@ public class Model{
         }
         return maxQuestions;
     }
+
+    public List<Question> configureExam(int numQuestions, String topic) throws IRepositoryException {
+        List<Question> questionsExam=new ArrayList<>();
+        List<Question> allQuestions=repository.getAllQuestions();
+        Collections.shuffle(allQuestions);
+        if(topic.equals("TODOS")){
+            for(int i=0;i<numQuestions;i++){
+                questionsExam.add(allQuestions.get(i));
+            }
+        }
+        else{
+            for(int i=0;i<numQuestions;i++){
+                if(allQuestions.get(i).getTopics().contains(topic)){
+                    questionsExam.add(allQuestions.get(i));
+                }
+            }
+        }        
+    }
+    return questionsExam;
 }

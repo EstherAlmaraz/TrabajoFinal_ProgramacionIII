@@ -75,4 +75,7 @@ public class Controller {
     public int topicSelected(String topic) {
         return model.getMaxQuestions(topic);
     }
+    public List<Question> numQuestionsSelected(int numQuestions, String topic) throws IRepositoryException {
+        return model.configureExam(numQuestions, topic);
+    }
 }

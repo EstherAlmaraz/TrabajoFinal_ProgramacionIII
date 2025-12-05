@@ -362,6 +362,10 @@ public void startExamMode(){
     
     showMessage("Introduzca el número de preguntas que desea realizar:");
     int numQuestions=Esdia.readInt("Número de preguntas: ",1,maxQuestions);
-
+    try {
+        List<Question> examQuestions = controller.numQuestionsSelected(numQuestions, topicOption);
+    } catch (IRepositoryException e) {
+        showErrorMessage("Error al configurar el examen: " + e.getMessage());
+    }
 }
 }
